@@ -1,0 +1,31 @@
+Simple scripts to make working with quagga a bit nicer.
+
+Place scripts into /root/peering-scripts/ and then source the .bashrc file in your shell.
+
+Works best with later versions of quagga ("show run" doesn't work otherwise)
+
+This allows doing cisco-esque include/begin/section etc, eg:
+
+[root@router1 ~]# show run | s ospf
+debug ospf6 lsa unknown
+router ospf
+ ospf router-id 10.110.1.222
+ redistribute connected
+ network 10.110.1.208/30 area 0.0.0.0
+ network 10.110.1.212/30 area 0.0.0.0
+ network 10.110.1.220/30 area 0.0.0.0
+!
+[root@router1 ~]#
+
+
+[root@router1 ~]# show run | i 10.110.1.222
+ ip address 10.110.1.222/30
+ bgp router-id 10.110.1.222
+ ospf router-id 10.110.1.222
+[root@router1 ~]# 
+
+
+Also included is an "addPeer" script, useful for adding new peering sessions. Pass in a selection of IPs and it will check which ones are on a shared subnet, and add some basic bgp peering for them. (No password or max-prefix yet)
+
+
+The last extra is "bgpsum" which is just a command that runs both "show ip bgp" and "show ipv6 bgp" commands together.
